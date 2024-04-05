@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.*;
+public class WordCounter 
+{
+    public static void main(String[] args) 
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the text or provide a file path to count words:");
+        String input = scanner.nextLine();
+        ArrayList<String> words = new ArrayList<String>();
+        if (input.contains(".txt")) 
+        {
+            try 
+            {
+                File file = new File(input);
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) 
+                {
+                    words.addAll(splitWords(line));
+                }
+                bufferedReader.close();
+            } catch (IOException e) {
+                System.out.println("Error" + e.getMessage());
+                return;
+            }
+        }
+        else 
+        {
+            words = splitWords(input);
+        }
+        int wordCount = countWords(words);
+        System.out.println("Total word count: " + wordCount);
+    }
+    private static ArrayList<String> splitWords(String text) 
+    {
+        ArrayList<String> words = new ArrayList<String>();
+        String[] splitText = text.split("[\\s\\p{P}]+");
+        for (String word : splitText) 
+        {
+            if (!word.isEmpty()) 
+            {
+                words.add(word.toLowerCase());
+            }
+        }
+        return words;
+    }
+    private static int countWords(ArrayList<String> words) 
+    {
+        int counter = 0;
+        for (String word : words) 
+        {
+            counter++;
+        }
+        return counter;
+    }
+}
